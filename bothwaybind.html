@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>双向绑定DEMO</title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<form class="form">
+		<p>name<input type="text" name="name" class="name"></p>
+		<p>age<input type="text" name="age" class="age"></p>
+	</form>
+	<script type="text/javascript">
+		let person = {
+            _data: {
+            	name: '',
+            	age: ''
+            }
+		};
+
+		let form = document.querySelector('.form');
+        function binding (obj, key) {
+        	let dom = document.querySelector(`.${key}`);
+        	Object.defineProperty(obj, key, {
+			    get () {
+				console.log(`${key}被获取了`);
+				return obj._data[key];
+			},
+			    set (value) {
+				console.log(`${key}被修改了`,person);
+				dom.value = value ;
+				obj._data[key] = value;
+			}
+		});
+        }
+        for (let key in person._data) {
+        	console.log('hello');
+        	binding(person,key)
+        }		
+	
+		form.addEventListener('input', (e) => {
+			let value = e.target.value;
+			let name = e.target.getAttribute('name');
+			person[name] = value;
+		});
+	</script>
+
+</body>
+</html>
